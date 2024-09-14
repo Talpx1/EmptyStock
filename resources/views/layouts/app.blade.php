@@ -21,7 +21,7 @@
     {{-- NAVBAR mobile only --}}
     <x-nav sticky class="lg:hidden">
         <x-slot:brand>
-            <div class="ml-5 pt-5">App</div>
+            <div class="ml-5 pt-5">{{ config('app.name', 'Laravel') }}</div>
         </x-slot:brand>
         <x-slot:actions>
             <label for="main-drawer" class="lg:hidden mr-3">
@@ -36,7 +36,7 @@
         <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100 lg:bg-inherit">
 
             {{-- BRAND --}}
-            <div class="ml-5 pt-5">App</div>
+            <div class="ml-5 pt-5">{{ config('app.name', 'Laravel') }}</div>
 
             {{-- MENU --}}
             <x-menu activate-by-route>
@@ -48,7 +48,7 @@
                     <x-list-item :item="$user" value="name" sub-value="email" no-separator no-hover
                         class="-mx-2 !-my-2 rounded">
                         <x-slot:actions>
-                            <livewire:components.logout-button />
+                            <livewire:layout.logout-button />
                         </x-slot:actions>
                     </x-list-item>
 

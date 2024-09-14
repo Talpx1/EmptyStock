@@ -4,14 +4,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
+use Mary\Traits\Toast;
 
 use function Livewire\Volt\rules;
 use function Livewire\Volt\state;
 
+uses([Toast::class]);
+
 state([
     'current_password' => '',
     'password' => '',
-    'password_confirmation' => ''
+    'password_confirmation' => '',
 ]);
 
 rules([
@@ -34,6 +37,8 @@ $updatePassword = function () {
 
     $this->reset('current_password', 'password', 'password_confirmation');
 
+    $this->success(__('Saved.'));
+
     $this->dispatch('password-updated');
 };
 
@@ -51,30 +56,16 @@ $updatePassword = function () {
     </header>
 
     <form wire:submit="updatePassword" class="mt-6 space-y-6">
-        <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input wire:model="current_password" id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->get('current_password')" class="mt-2" />
-        </div>
+        <x-input :label="__('Current Password')" wire:model="current_password" name="current_password" type="password"
+            autocomplete="current-password" />
 
-        <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input wire:model="password" id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <x-input :label="__('New Password')" wire:model="password" name="password" type="password" autocomplete="new-password" />
 
-        <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input wire:model="password_confirmation" id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+        <x-input for="update_password_password_confirmation" :label="__('Confirm Password')" wire:model="password_confirmation"
+            name="password_confirmation" type="password" autocomplete="new-password" />
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
-            <x-action-message class="me-3" on="password-updated">
-                {{ __('Saved.') }}
-            </x-action-message>
+            <x-button class="btn-primary" :label="__('Save')" />
         </div>
     </form>
 </section>
