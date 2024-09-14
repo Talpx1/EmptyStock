@@ -44,7 +44,9 @@
                 "ms-vscode-remote.remote-wsl",
                 "github.vscode-github-actions",
                 "open-southeners.laravel-pint",
-                "cierra.livewire-vscode"
+                "cierra.livewire-vscode",
+                "bradlc.vscode-tailwindcss",
+                "adrianwilczynski.alpine-js-intellisense"
             ],
             "settings": {}
         }
