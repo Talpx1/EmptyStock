@@ -50,7 +50,7 @@ $register = function () {
 
             {{-- Last Name --}}
             <x-input :label="__('Last Name')" :placeholder="__('Your last name')" icon="o-user" wire:model="last_name" required
-                autocomplete="first-name" />
+                autocomplete="last-name" />
         </div>
 
 

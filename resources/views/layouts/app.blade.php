@@ -35,8 +35,16 @@
         {{-- SIDEBAR --}}
         <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100 lg:bg-inherit">
 
-            {{-- BRAND --}}
-            <div class="ml-5 pt-5">{{ config('app.name', 'Laravel') }}</div>
+            <div class="ml-5 pt-5 flex flex-col gap-5 items-center">
+                {{-- BRAND --}}
+                <x-app-logo class="max-w-24" />
+
+                {{-- UTILS --}}
+                <div class="flex gap-4">
+                    {{-- THEME TOGGLE --}}
+                    <x-theme-toggle />
+                </div>
+            </div>
 
             {{-- MENU --}}
             <x-menu activate-by-route>

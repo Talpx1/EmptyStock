@@ -8,6 +8,7 @@ use Mary\Traits\Toast;
 
 use function Livewire\Volt\rules;
 use function Livewire\Volt\state;
+use function Livewire\Volt\uses;
 
 uses([Toast::class]);
 

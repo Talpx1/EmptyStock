@@ -30,7 +30,8 @@ test('profile information can be updated', function () {
     actingAs($user);
 
     $component = Volt::test('profile.update-profile-information-form')
-        ->set('name', 'Test User')
+        ->set('first_name', 'Test')
+        ->set('last_name', 'User')
         ->set('email', 'test@example.com')
         ->call('updateProfileInformation');
 
@@ -40,7 +41,8 @@ test('profile information can be updated', function () {
 
     $user->refresh();
 
-    assertSame('Test User', $user->name);
+    assertSame('Test', $user->first_name);
+    assertSame('User', $user->last_name);
     assertSame('test@example.com', $user->email);
     assertNull($user->email_verified_at);
 });
@@ -51,7 +53,8 @@ test('email verification status is unchanged when the email address is unchanged
     actingAs($user);
 
     $component = Volt::test('profile.update-profile-information-form')
-        ->set('name', 'Test User')
+        ->set('first_name', 'Test')
+        ->set('last_name', 'User')
         ->set('email', $user->email)
         ->call('updateProfileInformation');
 

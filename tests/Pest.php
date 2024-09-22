@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 /*
@@ -14,7 +16,7 @@ use Tests\TestCase;
 |
 */
 
-uses(TestCase::class, RefreshDatabase::class)->in('Feature');
+pest()->extends(TestCase::class)->use(RefreshDatabase::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +29,14 @@ uses(TestCase::class, RefreshDatabase::class)->in('Feature');
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
+//expect collection of models contains the provided collection of models
+expect()->intercept('toContain', fn ($value) => is_a($value, Collection::class) && $value->every(fn ($entry) => is_a($entry, Model::class)), function (Collection $models) {
+    expect($this->value->pluck('id'))->toContain(...$models->pluck('id')->toArray());
+});
+
+//expect the provided model to be the same model
+expect()->intercept('toBe', Model::class, function (Model $expected) {
+    expect($this->value->id)->toBe($expected->id);
 });
 
 /*
@@ -42,7 +50,6 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
-{
+function something() {
     // ..
 }

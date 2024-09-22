@@ -50,7 +50,7 @@ $login = function () {
                     </a>
                 @endif
 
-                <x-button class="btn-primary" :label="__('Log in')" />
+                <x-button type="submit" class="btn-primary" :label="__('Log in')" />
             </div>
         </x-slot:actions>
     </x-form>

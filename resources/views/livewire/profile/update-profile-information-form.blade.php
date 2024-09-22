@@ -8,11 +8,13 @@ use Illuminate\Validation\Rule;
 use Mary\Traits\Toast;
 
 use function Livewire\Volt\state;
+use function Livewire\Volt\uses;
 
 uses([Toast::class]);
 
 state([
-    'name' => fn() => auth()->user()->name,
+    'first_name' => fn() => auth()->user()->first_name,
+    'last_name' => fn() => auth()->user()->last_name,
     'email' => fn() => auth()->user()->email,
 ]);
 
@@ -20,7 +22,8 @@ $updateProfileInformation = function () {
     $user = Auth::user();
 
     $validated = $this->validate([
-        'name' => ['required', 'string', 'max:255'],
+        'first_name' => ['required', 'string', 'max:255'],
+        'last_name' => ['required', 'string', 'max:255'],
         'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
     ]);
 
@@ -34,7 +37,7 @@ $updateProfileInformation = function () {
 
     $this->success(__('Saved.'));
 
-    $this->dispatch('profile-updated', name: $user->name);
+    $this->dispatch('profile-updated', id: $user->id);
 };
 
 $sendVerification = function () {
@@ -65,7 +68,13 @@ $sendVerification = function () {
     </header>
 
     <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
-        <x-input :label="__('Name')" wire:model="name" name="name" type="text" required autofocus autocomplete="name" />
+        <div class="flex gap-6">
+            <x-input :label="__('First name')" wire:model="first_name" name="first_name" type="text" required autofocus
+                autocomplete="first-name" />
+            <x-input :label="__('Last name')" wire:model="last_name" name="last_name" type="text" required
+                autocomplete="last-name" />
+
+        </div>
 
         <div>
             <x-input :label="__('Email')" wire:model="email" name="email" type="email" required
