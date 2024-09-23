@@ -5,8 +5,6 @@ use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 
-describe('accessors and mutators', function () {});
-
 describe('database constraints', function () {
     test('user_id is required', function () {
         Profile::factory()->create(['user_id' => null]);
@@ -17,8 +15,10 @@ describe('database constraints', function () {
     })->throws(QueryException::class, 'nickname', 23000);
 });
 
+describe('accessors and mutators', function () {});
+
 describe('relations', function () {
-    test('belongs to user', function () {
+    it('belongs to user', function () {
         $user = User::factory()->create();
         $profile = Profile::factory()->for($user)->create();
 

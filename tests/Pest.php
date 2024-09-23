@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 /*
@@ -16,7 +17,10 @@ use Tests\TestCase;
 |
 */
 
-pest()->extends(TestCase::class)->use(RefreshDatabase::class);
+pest()
+    ->extends(TestCase::class)
+    ->use(RefreshDatabase::class)
+    ->beforeEach(fn () => Http::preventStrayRequests());
 
 /*
 |--------------------------------------------------------------------------
@@ -30,9 +34,11 @@ pest()->extends(TestCase::class)->use(RefreshDatabase::class);
 */
 
 //expect collection of models contains the provided collection of models
-expect()->intercept('toContain', fn ($value) => is_a($value, Collection::class) && $value->every(fn ($entry) => is_a($entry, Model::class)), function (Collection $models) {
-    expect($this->value->pluck('id'))->toContain(...$models->pluck('id')->toArray());
-});
+expect()->intercept(
+    'toContain',
+    fn ($value) => is_a($value, Collection::class) && $value->every(fn ($entry) => is_a($entry, Model::class)),
+    fn (Collection $models) => expect($this->value->pluck('id'))->toContain(...$models->pluck('id')->toArray())
+);
 
 //expect the provided model to be the same model
 expect()->intercept('toBe', Model::class, function (Model $expected) {
