@@ -24,7 +24,7 @@
         </a>
     </div>
 
-    <x-card shadow>
+    <x-card shadow class="max-w-lg">
         <div class="mb-4 w-fit ml-auto">
             <x-theme-toggle />
         </div>

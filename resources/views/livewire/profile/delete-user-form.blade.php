@@ -10,15 +10,17 @@ state(['password' => '', 'modal' => false]);
 
 rules(['password' => ['required', 'string', 'current_password']]);
 
+$toggleModal = fn() => ($this->modal = !$this->modal);
+
 $deleteUser = function (Logout $logout) {
     $this->validate();
 
     tap(Auth::user(), $logout(...))->delete();
 
+    $this->modal = false;
+
     $this->redirect('/', navigate: true);
 };
-
-$toggleModal = fn() => ($this->modal = !$this->modal);
 
 ?>
 
@@ -33,7 +35,7 @@ $toggleModal = fn() => ($this->modal = !$this->modal);
         </p>
     </header>
 
-    <x-button class="btn-danger" wire:click="toggleModal" :label="__('Delete Account')" />
+    <x-button class="btn-error" wire:click="toggleModal" :label="__('Delete Account')" />
 
     <x-modal wire:model='modal'>
         <x-form wire:submit="deleteUser" class="p-6">
@@ -50,9 +52,9 @@ $toggleModal = fn() => ($this->modal = !$this->modal);
                 <x-input :label="__('Password')" wire:model="password" name="password" type="password" :placeholder="__('Password')" />
             </div>
 
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 gap-6 flex justify-end">
                 <x-button wire:click="toggleModal" :label="__('Cancel')" />
-                <x-button class="btn-danger" wire:click="toggleModal" :label="__('Delete Account')" />
+                <x-button class="btn-error" :label="__('Delete Account')" type="submit" />
             </div>
         </x-form>
     </x-modal>

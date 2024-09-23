@@ -10,5 +10,5 @@ $logout = function (Logout $logout) {
 
 ?>
 <div>
-    <x-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="logout" wire:click="logout" />
+    <x-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="Logout" wire:click="logout" />
 </div>

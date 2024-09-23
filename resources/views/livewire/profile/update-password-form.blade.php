@@ -38,7 +38,7 @@ $updatePassword = function () {
 
     $this->reset('current_password', 'password', 'password_confirmation');
 
-    $this->success(__('Saved.'));
+    $this->success(__('Password Updated'));
 
     $this->dispatch('password-updated');
 };
@@ -56,7 +56,7 @@ $updatePassword = function () {
         </p>
     </header>
 
-    <form wire:submit="updatePassword" class="mt-6 space-y-6">
+    <x-form no-separator wire:submit="updatePassword" class="mt-6 space-y-6">
         <x-input :label="__('Current Password')" wire:model="current_password" name="current_password" type="password"
             autocomplete="current-password" />
 
@@ -65,8 +65,10 @@ $updatePassword = function () {
         <x-input for="update_password_password_confirmation" :label="__('Confirm Password')" wire:model="password_confirmation"
             name="password_confirmation" type="password" autocomplete="new-password" />
 
-        <div class="flex items-center gap-4">
-            <x-button class="btn-primary" :label="__('Save')" />
-        </div>
-    </form>
+        <x-slot:actions>
+            <div class="w-full justify-start">
+                <x-button class="btn-primary w-full sm:w-auto" :label="__('Save')" type="submit" />
+            </div>
+        </x-slot:actions>
+    </x-form>
 </section>

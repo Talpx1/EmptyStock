@@ -53,10 +53,16 @@
                 @if ($user = auth()->user())
                     <x-menu-separator />
 
-                    <x-list-item :item="$user" value="name" sub-value="email" no-separator no-hover
-                        class="-mx-2 !-my-2 rounded">
+                    <x-list-item :item="$user" sub-value="email" no-separator no-hover class="-mx-2 !-my-2 rounded">
+                        <x-slot:value>
+                            {{ $user->first_name }} {{ $user->last_name }}
+                        </x-slot:value>
                         <x-slot:actions>
-                            <livewire:layout.logout-button />
+                            <div class="flex gap-4">
+                                <x-button icon="o-pencil" link="{{ route('profile') }}" wire:navigate :tooltip-left="__('Edit Profile')"
+                                    class="btn-circle btn-ghost btn-xs" />
+                                <livewire:layout.logout-button />
+                            </div>
                         </x-slot:actions>
                     </x-list-item>
 

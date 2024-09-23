@@ -43,7 +43,7 @@ $register = function () {
 
 <div>
     <x-form wire:submit="register" class="gap-8">
-        <div class="flex gap-4">
+        <div class="sm:flex contents flex-row gap-4">
             {{-- First Name --}}
             <x-input :label="__('First Name')" :placeholder="__('Your first name')" icon="o-user" wire:model="first_name" autofocus required
                 autocomplete="first-name" />
@@ -67,13 +67,13 @@ $register = function () {
         <x-input :label="__('Confirm Password')" wire:model="password_confirmation" :placeholder="__('Type your password again')" icon="o-lock-closed"
             type="password" required autocomplete="new-password" />
 
-        <div class="flex items-center justify-end gap-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+        <div class="flex flex-col sm:flex-row items-center justify-end gap-4">
+            <a class="order-2 sm:order-1 underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                 href="{{ route('login') }}" wire:navigate>
                 {{ __('Already registered?') }}
             </a>
 
-            <x-button class="btn-primary" :label="__('Register')" type="submit" />
+            <x-button class="btn-primary order-1 sm:order-2 w-full sm:w-auto" :label="__('Register')" type="submit" />
         </div>
     </x-form>
 </div>

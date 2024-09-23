@@ -35,7 +35,7 @@ $updateProfileInformation = function () {
 
     $user->save();
 
-    $this->success(__('Saved.'));
+    $this->success(__('Profile updated'));
 
     $this->dispatch('profile-updated', id: $user->id);
 };
@@ -67,13 +67,16 @@ $sendVerification = function () {
         </p>
     </header>
 
-    <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
-        <div class="flex gap-6">
-            <x-input :label="__('First name')" wire:model="first_name" name="first_name" type="text" required autofocus
-                autocomplete="first-name" />
-            <x-input :label="__('Last name')" wire:model="last_name" name="last_name" type="text" required
-                autocomplete="last-name" />
-
+    <x-form wire:submit="updateProfileInformation" class="mt-6 flex- flex-col gap-y-6" no-separator>
+        <div class="contents sm:flex flex-col sm:flex-row gap-6">
+            <div class="grow">
+                <x-input :label="__('First name')" wire:model="first_name" name="first_name" type="text" required autofocus
+                    autocomplete="first-name" />
+            </div>
+            <div class="grow">
+                <x-input :label="__('Last name')" wire:model="last_name" name="last_name" type="text" required
+                    autocomplete="last-name" />
+            </div>
         </div>
 
         <div>
@@ -97,8 +100,10 @@ $sendVerification = function () {
             @endif
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-button class="btn-primary" :label="__('Save')" />
-        </div>
-    </form>
+        <x-slot:actions>
+            <div class="w-full justify-start">
+                <x-button class="btn-primary w-full sm:w-auto" :label="__('Save')" type="submit" />
+            </div>
+        </x-slot:actions>
+    </x-form>
 </section>
