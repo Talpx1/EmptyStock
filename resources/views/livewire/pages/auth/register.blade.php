@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use App\Rules\UnauthorizedEmailProviders;
+use App\Rules\Username;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +18,7 @@ state([
     'first_name' => '',
     'last_name' => '',
     'email' => '',
+    'username' => '',
     'password' => '',
     'password_confirmation' => '',
 ]);
@@ -23,7 +26,8 @@ state([
 rules([
     'first_name' => ['required', 'string', 'max:255'],
     'last_name' => ['required', 'string', 'max:255'],
-    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+    'username' => ['required', 'string', 'min:3', 'max:255', 'lowercase', new Username],
+    'email' => ['required', 'string', 'lowercase', 'email:rfc,dns', 'max:255', 'unique:'.User::class, new UnauthorizedEmailProviders],
     'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
 ]);
 
@@ -32,7 +36,14 @@ $register = function () {
 
     $validated['password'] = Hash::make($validated['password']);
 
-    event(new Registered(($user = User::create($validated))));
+    $user = DB::transaction(function () use ($validated) {
+        $user = User::create(Arr::except($validated, 'username'));
+        $user->profiles()->create(['username' => $validated['username']]);
+
+        return $user;
+    });
+
+    event(new Registered($user));
 
     Auth::login($user);
 
@@ -57,6 +68,10 @@ $register = function () {
 
         {{-- Email Address --}}
         <x-input :label="__('Email')" :placeholder="__('Your email')" icon="o-envelope" wire:model="email" type="email" required
+            autocomplete="username" />
+
+        {{-- username --}}
+        <x-input :label="__('Username')" :placeholder="__('username')" icon="o-at-symbol" wire:model="username" type="text" required
             autocomplete="username" />
 
         {{-- Password --}}
