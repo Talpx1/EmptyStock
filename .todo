@@ -1,2 +1,4 @@
-[ ] auth
+[X] auth
+[X] default profile creation
+[ ] profile username change
 [ ] roles & permissions
