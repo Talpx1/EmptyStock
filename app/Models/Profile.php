@@ -20,7 +20,7 @@ final class Profile extends Model {
      */
     protected $fillable = [
         'user_id',
-        'nickname',
+        'username',
     ];
 
     /** @return BelongsTo<User, Profile> */

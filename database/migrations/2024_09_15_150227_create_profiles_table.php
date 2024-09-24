@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
 
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('nickname')->unique();
+            $table->string('username')->unique();
 
             $table->timestamps();
         });

@@ -10,9 +10,9 @@ describe('database constraints', function () {
         Profile::factory()->create(['user_id' => null]);
     })->throws(QueryException::class, 'user_id', 23000);
 
-    test('nickname is required', function () {
-        Profile::factory()->create(['nickname' => null]);
-    })->throws(QueryException::class, 'nickname', 23000);
+    test('username is required', function () {
+        Profile::factory()->create(['username' => null]);
+    })->throws(QueryException::class, 'username', 23000);
 });
 
 describe('accessors and mutators', function () {});
