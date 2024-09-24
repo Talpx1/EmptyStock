@@ -1,4 +1,24 @@
 [X] auth
 [X] default profile creation
-[ ] profile username change
+
 [ ] roles & permissions
+[ ] profile username change
+[ ] last profile auto-select on login
+[ ] mark profile as preferred (use on login)
+[ ] add dob to user
+[ ] add phone to user (also validation)
+[ ] add last login to user
+[ ] clean users that do not login from a year (notice email 90, 30, 7 days before deletion)
+[ ] add support for profile pics
+[ ] add support for same profile for more companies (? maybe)
+[ ] add contacts to company
+[ ] add social links to company
+[ ] add contact email per profile (use that email for communications instead of the user one)
+[ ] add profile email verification
+[ ] add support for company pic
+[ ] add country to company
+[ ] add country to user
+[ ] add cover image support to company
+[ ] reviews
+[ ] ratings
+[ ] chat
