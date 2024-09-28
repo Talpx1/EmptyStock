@@ -40,6 +40,7 @@ final class LoginForm extends Form {
             ]);
         }
 
+        //TODO: this should take the last logged in profile or the preferred profile
         /** @var \App\Models\Profile */
         $profile = type(auth()->user())->as(User::class)->profiles()->first();
 

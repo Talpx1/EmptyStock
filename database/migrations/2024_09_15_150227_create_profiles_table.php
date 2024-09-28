@@ -12,7 +12,10 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-
+            //TODO: picture_path
+            //TODO: company_id
+            //TODO: last_used
+            //TODO: contact_email
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('username')->unique();
 

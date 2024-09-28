@@ -10,6 +10,8 @@ return new class extends Migration {
      */
     public function up(): void {
         Schema::create('companies', function (Blueprint $table) {
+            //TODO: picture_path
+            //TODO: cover_image_path
             $table->id();
             $table->string('name')->unique();
             $table->string('slogan')->nullable();

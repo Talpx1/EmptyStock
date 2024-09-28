@@ -10,6 +10,9 @@ return new class extends Migration {
      */
     public function up(): void {
         Schema::create('users', function (Blueprint $table) {
+            //TODO: phone
+            //TODO: dob
+            //TODO: last login
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
