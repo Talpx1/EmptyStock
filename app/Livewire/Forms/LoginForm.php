@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
+use App\Actions\SetActiveProfile;
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -37,6 +39,11 @@ final class LoginForm extends Form {
                 'form.email' => trans('auth.failed'),
             ]);
         }
+
+        /** @var \App\Models\Profile */
+        $profile = type(auth()->user())->as(User::class)->profiles()->first();
+
+        (new SetActiveProfile)->handle($profile);
 
         RateLimiter::clear($this->throttleKey());
     }

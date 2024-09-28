@@ -31,8 +31,16 @@ $deleteUser = function (Logout $logout) {
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+            {{ __('Once your user account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
         </p>
+
+        <x-alert :title="__('Important notice!')" :description="__(
+            'This action will delete all your profiles! If you want to only delete one of your profiles, do so in the profile settings.',
+        )" icon="o-exclamation-triangle" class="alert-warning mt-3" />
+
+        <x-alert :title="__('Your shop may get deleted!')" :description="__(
+            'If you are the owner of one or more shops, those will be deleted as well. Please transfer ownership in the shop settings if you don\'t want your shop to be deleted.',
+        )" icon="o-exclamation-triangle" class="alert-warning mt-3" />
     </header>
 
     <x-button class="btn-error" wire:click="toggleModal" :label="__('Delete Account')" />

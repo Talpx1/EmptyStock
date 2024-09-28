@@ -6,11 +6,17 @@ namespace App\Models;
 
 use App\Models\Traits\LogsAllDirtyChanges;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Session;
 
+/**
+ * @property-read Profile $active_profile
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Profile> $inactive_profiles
+ */
 final class User extends Authenticatable implements MustVerifyEmail {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, LogsAllDirtyChanges, Notifiable;
@@ -52,5 +58,15 @@ final class User extends Authenticatable implements MustVerifyEmail {
     /** @return HasMany<Profile> */
     public function profiles(): HasMany {
         return $this->hasMany(Profile::class);
+    }
+
+    /** @return Attribute<Profile, never> */
+    public function activeProfile(): Attribute { //TODO: test
+        return Attribute::get(fn () => Session::get(Profile::ACTIVE_PROFILE_SESSION_KEY));
+    }
+
+    /** @return Attribute<\Illuminate\Database\Eloquent\Collection<int, Profile>, never> */
+    public function inactiveProfiles(): Attribute { //TODO: test
+        return Attribute::get(fn () => $this->profiles()->whereNot('id', $this->active_profile->id)->get());
     }
 }

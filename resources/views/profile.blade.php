@@ -1,29 +1,22 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+    <div class="space-y-6">
+        <x-card shadow class="max-w-3xl">
+            <livewire:profile.update-profile-information-form />
+        </x-card>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <x-card shadow>
-                <div class="max-w-xl">
-                    <livewire:profile.update-profile-information-form />
-                </div>
-            </x-card>
+        <x-card shadow class="max-w-3xl">
+            <header>
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    {{ __('User Information') }}
+                </h2>
 
-            <x-card shadow>
-                <div class="max-w-xl">
-                    <livewire:profile.update-password-form />
-                </div>
-            </x-card>
+            </header>
 
-            <x-card shadow>
-                <div class="max-w-xl">
-                    <livewire:profile.delete-user-form />
-                </div>
-            </x-card>
-        </div>
+            <x-alert :title="__('Cross-profile modifications')" :description="__(
+                'If you proceed to edit your user information, all the changes will be applied to all profiles.',
+            )" icon="o-exclamation-triangle" class="alert-warning mt-3" />
+
+            <x-button class="btn-primary w-full sm:w-auto mt-3" :label="__('Edit user information')" link="{{ route('user') }}" />
+        </x-card>
     </div>
 </x-app-layout>

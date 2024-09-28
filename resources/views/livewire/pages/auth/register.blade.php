@@ -7,6 +7,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Actions\UserRegistered;
 
 use function Livewire\Volt\layout;
 use function Livewire\Volt\rules;
@@ -26,8 +27,8 @@ state([
 rules([
     'first_name' => ['required', 'string', 'max:255'],
     'last_name' => ['required', 'string', 'max:255'],
-    'username' => ['required', 'string', 'min:3', 'max:255', 'lowercase', new Username],
-    'email' => ['required', 'string', 'lowercase', 'email:rfc,dns', 'max:255', 'unique:'.User::class, new UnauthorizedEmailProviders],
+    'username' => ['required', 'string', 'min:3', 'max:255', 'lowercase', new Username()],
+    'email' => ['required', 'string', 'lowercase', 'max:255', 'email' . (app()->isProduction() ? ':rfc,dns' : ''), 'unique:' . User::class, new UnauthorizedEmailProviders()],
     'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
 ]);
 
@@ -43,7 +44,7 @@ $register = function () {
         return $user;
     });
 
-    event(new Registered($user));
+    (new UserRegistered())->handle($user);
 
     Auth::login($user);
 

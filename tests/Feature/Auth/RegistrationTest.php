@@ -29,6 +29,8 @@ test('new users can register', function () {
 
     $component->call('register');
 
+    dd(session());
+
     $component->assertRedirect(route('dashboard', absolute: false));
 
     $this->assertAuthenticated();
@@ -319,7 +321,9 @@ describe('validation', function () {
             ->assertHasErrors(['email' => ['unique:'.User::class]]);
     });
 
-    test('email must be of valid domain', function (string $email) {
+    test('email must be of valid domain when app is in production', function (string $email) {
+        app()->detectEnvironment(fn () => 'production');
+
         Volt::test('pages.auth.register')
             ->set('first_name', 'Test')
             ->set('last_name', 'User')
@@ -330,6 +334,20 @@ describe('validation', function () {
             ->call('register')
             ->assertHasErrors(['email' => ['email:rfc,dns']]);
     })->with(['a@a.com', 'b@b.com', 'a@123.test', '10mail.com', '10mail.org', '10mail.tk', '10mail.xyz', '10minmail.de', '10minut.com.pl', '10minut.xyz', '10minutemail.be', '10minutemail.cf', '10minutemail.co.uk', '10minutemail.co.za', '10minutemail.com', '10minutemail.de', '10minutesmail.com', '10minutesmail.fr', '10minutmail.pl', 'myzx.com', 'mzico.com', 'n1nja.org', 'zfymail.com', 'zhcne.com', 'zippymail.info']);
+
+    test('email can be of fake domain if app is not in production', function (string $email) {
+        Volt::test('pages.auth.register')
+            ->set('first_name', 'Test')
+            ->set('last_name', 'User')
+            ->set('email', $email)
+            ->set('username', 'testuser')
+            ->set('password', 'password')
+            ->set('password_confirmation', 'password')
+            ->call('register')
+            ->assertOk();
+
+        assertDatabaseHas(User::class, ['email' => $email]);
+    })->with(['a@a.com', 'b@b.com', 'a@123.test']);
 
     test('password is required', function () {
         Volt::test('pages.auth.register')

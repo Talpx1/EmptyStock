@@ -10,30 +10,30 @@ use function PHPUnit\Framework\assertNotNull;
 use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertSame;
 
-test('profile page is displayed', function () {
-    $user = User::factory()->create();
+test('user page is displayed', function () {
+    $user = User::factory()->withProfile()->create();
 
     actingAs($user);
 
-    $response = get('/profile');
+    $response = get('/user');
 
     $response
         ->assertOk()
-        ->assertSeeVolt('profile.update-profile-information-form')
-        ->assertSeeVolt('profile.update-password-form')
-        ->assertSeeVolt('profile.delete-user-form');
+        ->assertSeeVolt('user.update-user-information-form')
+        ->assertSeeVolt('user.update-password-form')
+        ->assertSeeVolt('user.delete-user-form');
 });
 
-test('profile information can be updated', function () {
-    $user = User::factory()->create();
+test('user information can be updated', function () {
+    $user = User::factory()->withProfile()->create();
 
     actingAs($user);
 
-    $component = Volt::test('profile.update-profile-information-form')
+    $component = Volt::test('user.update-user-information-form')
         ->set('first_name', 'Test')
         ->set('last_name', 'User')
         ->set('email', 'test@example.com')
-        ->call('updateProfileInformation');
+        ->call('updateUserInformation');
 
     $component
         ->assertHasNoErrors()
@@ -52,11 +52,11 @@ test('email verification status is unchanged when the email address is unchanged
 
     actingAs($user);
 
-    $component = Volt::test('profile.update-profile-information-form')
+    $component = Volt::test('user.update-user-information-form')
         ->set('first_name', 'Test')
         ->set('last_name', 'User')
         ->set('email', $user->email)
-        ->call('updateProfileInformation');
+        ->call('updateUserInformation');
 
     $component
         ->assertHasNoErrors()
@@ -70,7 +70,7 @@ test('user can delete their account', function () {
 
     actingAs($user);
 
-    $component = Volt::test('profile.delete-user-form')
+    $component = Volt::test('user.delete-user-form')
         ->set('password', 'password')
         ->call('deleteUser');
 
@@ -87,7 +87,7 @@ test('correct password must be provided to delete account', function () {
 
     actingAs($user);
 
-    $component = Volt::test('profile.delete-user-form')
+    $component = Volt::test('user.delete-user-form')
         ->set('password', 'wrong-password')
         ->call('deleteUser');
 

@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Profile extends Model {
+    public const string ACTIVE_PROFILE_SESSION_KEY = 'auth.user.profile.active';
+
     /** @use HasFactory<\Database\Factories\ProfileFactory> */
     use HasFactory, LogsAllDirtyChanges;
 

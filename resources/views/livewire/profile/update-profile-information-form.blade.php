@@ -1,10 +1,7 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rule;
+use App\Rules\Username;
 use Mary\Traits\Toast;
 
 use function Livewire\Volt\state;
@@ -13,45 +10,19 @@ use function Livewire\Volt\uses;
 uses([Toast::class]);
 
 state([
-    'first_name' => fn() => auth()->user()->first_name,
-    'last_name' => fn() => auth()->user()->last_name,
-    'email' => fn() => auth()->user()->email,
+    'username' => fn () => type(auth()->user())->as(User::class)->active_profile->username,
 ]);
 
 $updateProfileInformation = function () {
-    $user = Auth::user();
+    $profile = type(auth()->user())->as(User::class)->active_profile;
 
     $validated = $this->validate([
-        'first_name' => ['required', 'string', 'max:255'],
-        'last_name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
+        'username' => ['required', 'string', 'min:3', 'max:255', 'lowercase', new Username($profile)],
     ]);
 
-    $user->fill($validated);
+    $profile->update($validated);
 
-    if ($user->isDirty('email')) {
-        $user->email_verified_at = null;
-    }
-
-    $user->save();
-
-    $this->success(__('Profile updated'));
-
-    $this->dispatch('profile-updated', id: $user->id);
-};
-
-$sendVerification = function () {
-    $user = Auth::user();
-
-    if ($user->hasVerifiedEmail()) {
-        $this->redirectIntended(default: route('dashboard', absolute: false));
-
-        return;
-    }
-
-    $user->sendEmailVerificationNotification();
-
-    Session::flash('status', 'verification-link-sent');
+    $this->success(__('Profile updated successfully!'));
 };
 
 ?>
@@ -63,41 +34,14 @@ $sendVerification = function () {
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Update profile information for @:username", ['username'=>$username]) }}
         </p>
     </header>
 
     <x-form wire:submit="updateProfileInformation" class="mt-6 flex- flex-col gap-y-6" no-separator>
-        <div class="contents sm:flex flex-col sm:flex-row gap-6">
-            <div class="grow">
-                <x-input :label="__('First name')" wire:model="first_name" name="first_name" type="text" required autofocus
-                    autocomplete="first-name" />
-            </div>
-            <div class="grow">
-                <x-input :label="__('Last name')" wire:model="last_name" name="last_name" type="text" required
-                    autocomplete="last-name" />
-            </div>
-        </div>
-
         <div>
-            <x-input :label="__('Email')" wire:model="email" name="email" type="email" required
+            <x-input icon="o-at-symbol" :label="__('Username')" wire:model="username" name="username" type="text" required
                 autocomplete="username" />
-
-            @if (auth()->user() instanceof MustVerifyEmail && !auth()->user()->hasVerifiedEmail())
-                <div>
-                    <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        {{ __('Your email address is unverified.') }}
-
-                        <x-button wire:click.prevent="sendVerification" :label="__('Click here to re-send the verification email.')" />
-                    </p>
-
-                    @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('A new verification link has been sent to your email address.') }}
-                        </p>
-                    @endif
-                </div>
-            @endif
         </div>
 
         <x-slot:actions>
