@@ -1,3 +1,4 @@
+{{-- TODO: refactor to use x-card-stack and app-card --}}
 <x-app-layout>
     <div class="space-y-6">
         <x-card shadow class="max-w-3xl">
