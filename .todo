@@ -10,15 +10,15 @@
 [ ] add last login to user
 [ ] clean users that do not login from a year (notice email 90, 30, 7 days before deletion)
 [ ] add support for profile pics
-[ ] add support for same profile for more companies (? maybe)
-[ ] add contacts to company
-[ ] add social links to company
+[ ] add support for same profile for more shops (? maybe)
+[ ] add contacts to shop
+[ ] add social links to shop
 [ ] add contact email per profile (use that email for communications instead of the user one)
 [ ] add profile email verification
-[ ] add support for company pic
-[ ] add country to company
+[ ] add support for shop pic
+[ ] add country to shop
 [ ] add country to user
-[ ] add cover image support to company
+[ ] add cover image support to shop
 [ ] reviews
 [ ] ratings
 [ ] chat

@@ -9,7 +9,7 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('shops', function (Blueprint $table) {
             //TODO: picture_path
             //TODO: cover_image_path
             $table->id();
@@ -26,6 +26,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('shops');
     }
 };

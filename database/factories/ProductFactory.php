@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Company;
 use App\Models\Product;
+use App\Models\Shop;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
@@ -18,7 +18,7 @@ class ProductFactory extends Factory {
      */
     public function definition(): array {
         return [
-            'company_id' => Company::factory(),
+            'shop_id' => Shop::factory(),
             'title' => fake()->name(),
             'description' => fake()->paragraph(),
             'price' => fake()->randomFloat(2, .01, 999.99),

@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             //TODO: picture_path
-            //TODO: company_id
+            //TODO: shop_id
             //TODO: last_used
             //TODO: contact_email
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();

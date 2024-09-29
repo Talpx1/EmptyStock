@@ -17,7 +17,7 @@ final class Product extends Model {
      * @var array<int, string>
      */
     protected $fillable = [
-        'company_id',
+        'shop_id',
         'title',
         'description',
         'price',
@@ -38,8 +38,8 @@ final class Product extends Model {
         ];
     }
 
-    /** @return BelongsTo<Company, Product> */
-    public function company(): BelongsTo {
-        return $this->belongsTo(Company::class);
+    /** @return BelongsTo<Shop, Product> */
+    public function shop(): BelongsTo {
+        return $this->belongsTo(Shop::class);
     }
 }

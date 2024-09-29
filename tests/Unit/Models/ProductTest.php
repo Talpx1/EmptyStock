@@ -1,8 +1,8 @@
 <?php
 
 declare(strict_types=1);
-use App\Models\Company;
 use App\Models\Product;
+use App\Models\Shop;
 use Illuminate\Database\QueryException;
 
 use function Pest\Laravel\assertDatabaseHas;
@@ -47,44 +47,44 @@ describe('database constraints', function () {
         assertDatabaseHas(Product::class, ['individually_sellable' => false]);
     });
 
-    test('company_id is required', function () {
-        Product::factory()->create(['company_id' => null]);
-    })->throws(QueryException::class, 'company_id', 23000);
+    test('shop_id is required', function () {
+        Product::factory()->create(['shop_id' => null]);
+    })->throws(QueryException::class, 'shop_id', 23000);
 
-    test('if related Company id gets updated Product company_id also get updated', function () {
-        $company = Company::factory()->create();
-        $product = Product::factory()->for($company)->create();
+    test('if related Shop id gets updated Product shop_id also get updated', function () {
+        $shop = Shop::factory()->create();
+        $product = Product::factory()->for($shop)->create();
 
-        expect($product->company->id)->toEqual($company->id);
-        expect($product->company_id)->toEqual($company->id);
+        expect($product->shop->id)->toEqual($shop->id);
+        expect($product->shop_id)->toEqual($shop->id);
 
-        $company->id = 999;
-        $company->save();
+        $shop->id = 999;
+        $shop->save();
 
-        expect($company->fresh()->id)->toEqual(999);
+        expect($shop->fresh()->id)->toEqual(999);
 
-        expect($product->fresh()->company_id)->toEqual($company->fresh()->id);
-        expect($product->fresh()->company->fresh()->id)->toEqual($company->fresh()->id);
+        expect($product->fresh()->shop_id)->toEqual($shop->fresh()->id);
+        expect($product->fresh()->shop->fresh()->id)->toEqual($shop->fresh()->id);
     });
 
-    test('Product restrict deletion of related Company', function () {
-        $company = Company::factory()->create();
-        $product = Product::factory()->for($company)->create();
+    test('Product restrict deletion of related Shop', function () {
+        $shop = Shop::factory()->create();
+        $product = Product::factory()->for($shop)->create();
 
-        expect($product->company->id)->toEqual($company->id);
-        expect($product->company_id)->toEqual($company->id);
+        expect($product->shop->id)->toEqual($shop->id);
+        expect($product->shop_id)->toEqual($shop->id);
 
-        $company->delete();
+        $shop->delete();
     })->throws(QueryException::class, 'FOREIGN KEY', 23000);
 });
 
 describe('accessors and mutators', function () {
-    it('belongs to company', function () {
-        $company = Company::factory()->create();
-        $product = Product::factory()->for($company)->create();
+    it('belongs to shop', function () {
+        $shop = Shop::factory()->create();
+        $product = Product::factory()->for($shop)->create();
 
-        expect($product->company)->toBeInstanceOf(Company::class);
-        expect($product->company)->toBe($company);
+        expect($product->shop)->toBeInstanceOf(Shop::class);
+        expect($product->shop)->toBe($shop);
     });
 });
 

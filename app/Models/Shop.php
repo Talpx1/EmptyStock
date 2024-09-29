@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-final class Company extends Model {
-    /** @use HasFactory<\Database\Factories\CompanyFactory> */
+final class Shop extends Model {
+    /** @use HasFactory<\Database\Factories\ShopFactory> */
     use HasFactory, LogsAllDirtyChanges;
 
     /**
