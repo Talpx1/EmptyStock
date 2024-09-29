@@ -14,6 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Session;
 
 /**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Profile> $profiles
  * @property-read Profile $active_profile
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Profile> $inactive_profiles
  */
@@ -61,12 +62,12 @@ final class User extends Authenticatable implements MustVerifyEmail {
     }
 
     /** @return Attribute<Profile, never> */
-    public function activeProfile(): Attribute { //TODO: test
+    public function activeProfile(): Attribute {
         return Attribute::get(fn () => Session::get(Profile::ACTIVE_PROFILE_SESSION_KEY));
     }
 
     /** @return Attribute<\Illuminate\Database\Eloquent\Collection<int, Profile>, never> */
-    public function inactiveProfiles(): Attribute { //TODO: test
+    public function inactiveProfiles(): Attribute {
         return Attribute::get(fn () => $this->profiles()->whereNot('id', $this->active_profile->id)->get());
     }
 }
