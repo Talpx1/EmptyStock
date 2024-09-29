@@ -11,7 +11,7 @@ use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertSame;
 
 test('user page is displayed', function () {
-    $user = User::factory()->withProfile()->create();
+    $user = User::factory()->withActiveProfile()->create();
 
     actingAs($user);
 
@@ -25,7 +25,7 @@ test('user page is displayed', function () {
 });
 
 test('user information can be updated', function () {
-    $user = User::factory()->withProfile()->create();
+    $user = User::factory()->create();
 
     actingAs($user);
 

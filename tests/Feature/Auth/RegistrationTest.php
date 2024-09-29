@@ -29,8 +29,6 @@ test('new users can register', function () {
 
     $component->call('register');
 
-    dd(session());
-
     $component->assertRedirect(route('dashboard', absolute: false));
 
     $this->assertAuthenticated();
@@ -210,7 +208,8 @@ describe('validation', function () {
             ->assertHasErrors(['username' => ['lowercase']]);
     });
 
-    test('username must contain at least 2 letters', function (string $username) {
+    test('username must be valid', function (string $username) {
+        //covers the "new Username" rule -> tested in isolation in Unit/Rules/UsernameTest
         Volt::test('pages.auth.register')
             ->set('first_name', 'Test')
             ->set('last_name', 'User')
@@ -219,46 +218,8 @@ describe('validation', function () {
             ->set('password', 'password')
             ->set('password_confirmation', 'password')
             ->call('register')
-            ->assertHasErrors(['username' => ['The username must contain at least 2 letters.']]);
-    })->with(['a12345', 'a.123', '__a__']);
-
-    test('username may only contain letters numbers and underscores', function (string $username) {
-        Volt::test('pages.auth.register')
-            ->set('first_name', 'Test')
-            ->set('last_name', 'User')
-            ->set('email', 'test@gmail.com')
-            ->set('username', $username)
-            ->set('password', 'password')
-            ->set('password_confirmation', 'password')
-            ->call('register')
-            ->assertHasErrors(['username' => ['The username may only contain letters, numbers, and underscores.']]);
-    })->with(['username!', '@username', 'user-name', 'abコンサート']);
-
-    test('username must not be reserved', function (string $username) {
-        Volt::test('pages.auth.register')
-            ->set('first_name', 'Test')
-            ->set('last_name', 'User')
-            ->set('email', 'test@gmail.com')
-            ->set('username', $username)
-            ->set('password', 'password')
-            ->set('password_confirmation', 'password')
-            ->call('register')
-            ->assertHasErrors(['username' => ['The username is reserved.']]);
-    })->with(['about', 'access', 'admin', 'demo', 'dev', 'facebook', 'file', 'www', 'xxx']);
-
-    test('username must not be already in use', function () {
-        Profile::factory()->create(['username' => 'already_in_use']);
-
-        Volt::test('pages.auth.register')
-            ->set('first_name', 'Test')
-            ->set('last_name', 'User')
-            ->set('email', 'test@gmail.com')
-            ->set('username', 'already_in_use')
-            ->set('password', 'password')
-            ->set('password_confirmation', 'password')
-            ->call('register')
-            ->assertHasErrors(['username' => ['The username has already been taken.']]);
-    });
+            ->assertHasErrors(['username']);
+    })->with('invalid_usernames');
 
     test('email is required', function () {
         Volt::test('pages.auth.register')

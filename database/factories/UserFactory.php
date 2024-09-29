@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Actions\SetActiveProfile;
 use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -43,5 +45,9 @@ class UserFactory extends Factory {
 
     public function withProfile(?ProfileFactory $profile = null): static {
         return $this->has($profile ?? Profile::factory());
+    }
+
+    public function withActiveProfile(?ProfileFactory $profile = null): static {
+        return $this->has($profile ?? Profile::factory())->afterCreating(fn (User $user) => SetActiveProfile::run($user->profiles()->first()));
     }
 }

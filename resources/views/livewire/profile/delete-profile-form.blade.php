@@ -10,8 +10,6 @@ use function Livewire\Volt\rules;
 use function Livewire\Volt\state;
 use function Livewire\Volt\uses;
 
-//TODO: test
-
 uses([Toast::class]);
 
 state(['password' => '', 'modal' => false]);
@@ -34,7 +32,7 @@ $deleteProfile = function () {
 
     $alt_profile = $user->inactive_profiles->first();
     $user->active_profile->delete();
-    (new SetActiveProfile())->handle($alt_profile);
+    SetActiveProfile::run($alt_profile);
 
     $this->modal = false;
 
