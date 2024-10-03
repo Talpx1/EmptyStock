@@ -36,7 +36,7 @@ $deleteProfile = function () {
 
     $this->modal = false;
 
-    $this->redirect(route('dashboard'), navigate: true);
+    $this->redirect(route('app.dashboard'), navigate: true);
 };
 
 ?>

@@ -5,6 +5,8 @@ use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 
+use function Pest\Laravel\assertDatabaseHas;
+
 describe('database constraints', function () {
     test('user_id is required', function () {
         Profile::factory()->create(['user_id' => null]);
@@ -13,6 +15,11 @@ describe('database constraints', function () {
     test('username is required', function () {
         Profile::factory()->create(['username' => null]);
     })->throws(QueryException::class, 'username', 23000);
+
+    test('shop_id is nullable', function () {
+        $profile = Profile::factory()->create(['shop_id' => null]);
+        assertDatabaseHas(Profile::class, $profile->getAttributes());
+    });
 });
 
 describe('accessors and mutators', function () {});

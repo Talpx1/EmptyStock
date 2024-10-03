@@ -44,6 +44,11 @@ final class User extends Authenticatable implements MustVerifyEmail {
         'remember_token',
     ];
 
+    /** @var array<int, string> */
+    protected $appends = [
+        'active_profile',
+    ];
+
     /**
      * Get the attributes that should be cast.
      *

@@ -53,12 +53,12 @@
                 @if ($user = auth()->user())
                     <x-menu-separator />
 
-                    <x-app.sidebar.profile :profile="$user->profiles()->first()" />
+                    <x-app.sidebar.profile :profile="$user->active_profile" />
 
                     <x-menu-separator />
                 @endif
 
-                <x-app.sidebar.nav />
+                <x-app.sidebar.nav :profile="$user->active_profile" />
             </x-menu>
         </x-slot:sidebar>
 

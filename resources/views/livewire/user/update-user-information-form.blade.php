@@ -44,7 +44,7 @@ $sendVerification = function () {
     $user = Auth::user();
 
     if ($user->hasVerifiedEmail()) {
-        $this->redirectIntended(default: route('dashboard', absolute: false));
+        $this->redirectIntended(default: route('app.dashboard', absolute: false));
 
         return;
     }

@@ -12,7 +12,7 @@ use function Pest\Laravel\assertModelMissing;
 test('profile page is displayed', function () {
     $user = User::factory()->withActiveProfile()->create();
 
-    actingAs($user)->get(route('profile'))
+    actingAs($user)->get(route('app.profile'))
         ->assertOk()
         ->assertSeeVolt('profile.update-profile-information-form')
         ->assertSeeVolt('profile.delete-profile-form');
@@ -59,7 +59,7 @@ test('user can delete one of his profiles', function () {
         ->set('password', 'password')
         ->call('deleteProfile')
         ->assertHasNoErrors()
-        ->assertRedirect(route('dashboard'));
+        ->assertRedirect(route('app.dashboard'));
 
     assertModelMissing($to_be_deleted_profile);
     expect($user->fresh()->active_profile)->toBe($alt_profile);

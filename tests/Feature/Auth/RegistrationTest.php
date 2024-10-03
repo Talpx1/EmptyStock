@@ -29,7 +29,7 @@ test('new users can register', function () {
 
     $component->call('register');
 
-    $component->assertRedirect(route('dashboard', absolute: false));
+    $component->assertRedirect(route('app.dashboard', absolute: false));
 
     $this->assertAuthenticated();
 });

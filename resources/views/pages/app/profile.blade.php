@@ -11,23 +11,26 @@
         <livewire:profile.update-profile-information-form />
     </x-app.app-card>
 
-    {{-- TODO: only show this if the profile has a shop associated --}}
-    <x-app.app-card>
-        <x-slot:heading>{{ __('Turn into Shop Profile') }}</x-slot:heading>
-        <x-slot:description>
-            {{ __(
-                'You may turn this profile (@:username) into a "Shop Profile", meaning that it will be the owner of a new Shop. Alternatively, you can keep this profile as a "Customer Profile" and open a new one for your Shop.',
-                ['username' => $profile->username],
-            ) }}
-        </x-slot:description>
+    @if (!$profile->shop_id)
+        <x-app.app-card>
+            <x-slot:heading>{{ __('Turn into Shop Profile') }}</x-slot:heading>
+            <x-slot:description>
+                {{ __(
+                    'You may turn this profile (@:username) into a "Shop Profile", meaning that it will be the owner of a new Shop. Alternatively, you can keep this profile as a "Customer Profile" and open a new one for your Shop.',
+                    ['username' => $profile->username],
+                ) }}
+            </x-slot:description>
 
-        <x-slot:footer>
-            <div class="flex flex-col sm:flex-row gap-6">
-                <x-button class="btn-primary w-full sm:w-auto" :label="__('Turn this profile into a Shop Profile')" link="{{ route('user') }}" />
-                <x-button class="btn-primary w-full sm:w-auto" :label="__('Create a new Shop Profile')" link="{{ route('user') }}" />
-            </div>
-        </x-slot:footer>
-    </x-app.app-card>
+            <x-slot:footer>
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <x-button class="btn-primary w-full sm:w-auto" :label="__('Turn this profile into a Shop Profile')"
+                        link="{{ route('app.shop.create') }}" />
+                    <x-button class="btn-primary w-full sm:w-auto" :label="__('Create a new Shop Profile')"
+                        link="{{ route('app.shop.create', ['as_new_profile']) }}" />
+                </div>
+            </x-slot:footer>
+        </x-app.app-card>
+    @endif
 
     <x-app.app-card>
         <x-slot:heading>{{ __('User Information') }}</x-slot:heading>
@@ -35,7 +38,7 @@
         <x-alert :title="__('Cross-profile modifications')" :description="__('If you proceed to edit your user information, all the changes will be applied to all profiles.')" icon="o-exclamation-triangle" class="alert-warning mt-3" />
 
         <x-slot:footer>
-            <x-button class="btn-primary w-full sm:w-auto" :label="__('Edit user information')" link="{{ route('user') }}" />
+            <x-button class="btn-primary w-full sm:w-auto" :label="__('Edit user information')" link="{{ route('app.user') }}" />
         </x-slot:footer>
     </x-app.app-card>
 

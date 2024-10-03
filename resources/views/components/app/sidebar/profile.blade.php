@@ -15,7 +15,8 @@
                     <div class="space-y-2 p-2">
                         <div class="text-sm font-bold">{{ __('Switch Profile') }}</div>
                         @forelse (auth()->user()->inactive_profiles as $profile)
-                            <x-button class="btn-ghost" :label="'@' . $profile->username" />
+                            {{-- //TODO: test to assert that this components are correctly generated --}}
+                            <livewire:layout.switch-profile-button :profile="$profile" />
                         @empty
                             <div>{{ __('No other profiles available.') }}</div>
                         @endforelse
@@ -25,7 +26,7 @@
             </x-popover>
 
 
-            <x-button icon="o-pencil" link="{{ route('profile') }}" wire:navigate :tooltip-left="__('Edit Profile')"
+            <x-button icon="o-pencil" link="{{ route('app.profile') }}" wire:navigate :tooltip-left="__('Edit Profile')"
                 class="btn-circle btn-ghost btn-xs" />
 
             <livewire:layout.logout-button />
