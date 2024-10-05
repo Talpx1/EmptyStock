@@ -80,8 +80,7 @@ $storeShop = function () {
             <x-input icon="o-banknotes" :label="__('IBAN')" wire:model="iban" name="iban" type="text" min="2"
                 max="255" :placeholder="__('The IBAN of the account where to transfer the money of your sales')" required />
 
-            <x-textarea label="Description" wire:model="description" placeholder="Tell the story of your shop!"
-                rows="5" />
+            <x-textarea :label="__('Description')" wire:model="description" :placeholder="__('Tell the story of your shop!')" rows="5" />
 
             @if (request()->has('as_new_profile'))
                 <x-input :label="__('Username')" :placeholder="__('The username for your new shop-owner profile')" icon="o-at-symbol" wire:model="username" type="text"

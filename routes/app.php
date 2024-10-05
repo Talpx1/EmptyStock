@@ -9,3 +9,4 @@ Route::view('dashboard', 'pages.app.dashboard')->name('app.dashboard');
 Route::view('user', 'pages.app.user')->name('app.user');
 Route::view('profile', 'pages.app.profile')->name('app.profile');
 Volt::route('shop/create', 'pages.shop.create')->name('app.shop.create');
+Volt::route('product/create', 'pages.product.create')->name('app.product.create');

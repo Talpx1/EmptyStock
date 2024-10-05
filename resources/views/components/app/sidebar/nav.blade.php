@@ -5,4 +5,6 @@
 {{-- //TODO: test it shows this only for profile with shop --}}
 @if ($profile->has_shop)
     <x-menu-item title="Shop" icon="o-building-storefront" link="{{ route('app.dashboard') }}" />
+
+    <x-menu-item title="Products" icon="o-shopping-bag" link="{{ route('app.dashboard') }}" />
 @endif
