@@ -3,6 +3,7 @@
 use App\Models\Profile;
 use App\Models\Shop;
 use App\Models\User;
+use App\Models\Product;
 use App\Rules\Username;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,9 @@ use function Livewire\Volt\rules;
 use function Livewire\Volt\state;
 use function Livewire\Volt\uses;
 use function Livewire\Volt\js;
+use function Livewire\Volt\mount;
+use function Livewire\Volt\computed;
+use function Livewire\Volt\protect;
 
 //TODO: test
 
@@ -22,8 +26,28 @@ uses([Toast::class]);
 
 layout('layouts.app');
 
-state(['shop' => fn() => type(auth()->user())->as(User::class)->active_profile->shop])->locked();
+state([
+    'shop' => fn() => type(auth()->user())->as(User::class)->active_profile->shop,
+    'product' => null,
+])->locked();
 state(['title', 'description', 'price', 'is_bundle' => false, 'pieces_per_bundle' => null, 'individually_sellable' => false]);
+
+$heading = computed(fn() => $this->product ? __('Give a brand new feel to :title', ['title' => $this->product->title]) : __('Create new product for :shop', ['shop' => $this->shop->name]));
+$submit_btn_lbl = computed(fn() => $this->product ? __('It looks good') : __('This product is done, let\'s sell it'));
+$card_description = computed(fn() => $this->product ? __('Tweak this product as you see it best fit') : __("It's time to add a new amazing product to your shop! Just fill the form down there, and publish your new best-seller."));
+
+mount(function (?Product $product) {
+    if (!$product) {
+        return;
+    }
+
+    $this->title = $product->title;
+    $this->description = $product->description;
+    $this->price = $product->price;
+    $this->is_bundle = !is_null($product->pieces_per_bundle);
+    $this->pieces_per_bundle = $product->pieces_per_bundle;
+    $this->individually_sellable = $product->individually_sellable;
+});
 
 $resetPiecesPerBundle = js('!$wire.is_bundle && ($wire.pieces_per_bundle=null)');
 
@@ -36,24 +60,34 @@ rules([
     'individually_sellable' => ['nullable', 'boolean'],
 ]);
 
-$storeProduct = function () {
+$onSubmit = function () {
     $validated = $this->validate();
 
+    $this->product ? $this->updateProduct($validated) : $this->storeProduct($validated);
+
+    $this->redirect(route('app.product.index'), navigate: true);
+};
+
+$storeProduct = protect(function (array $validated) {
     $this->shop->products()->create(Arr::except($validated, 'is_bundle'));
 
     $this->success(__("Woo! {$validated['title']} has been created"));
+});
 
-    $this->redirect(route('app.profile'), navigate: true);
-};
+$updateProduct = protect(function (array $validated) {
+    $this->product->update(Arr::except($validated, 'is_bundle'));
+
+    $this->success(__("Nicely done! {$validated['title']} has been updated"));
+});
 
 ?>
 
 <div>
     <x-app.app-card>
-        <x-slot:heading>{{ __('Create new product for :shop', ['shop' => $shop->name]) }}</x-slot:heading>
-        <x-slot:description>{{ __("It's time to add a new amazing product to your shop! Just fill the form down there, and publish your new best-seller.") }}</x-slot:description>
+        <x-slot:heading>{{ $this->heading }}</x-slot:heading>
+        <x-slot:description>{{ $this->card_description }}</x-slot:description>
 
-        <x-form wire:submit="storeProduct" class="mt-6 flex flex-col gap-y-6" no-separator>
+        <x-form wire:submit="onSubmit" class="mt-6 flex flex-col gap-y-6" no-separator>
 
             <x-input icon="o-tag" :label="__('Title')" wire:model="title" name="title" type="text" min="2"
                 max="255" :placeholder="__('The best title a product has ever had')" required />
@@ -76,7 +110,7 @@ $storeProduct = function () {
 
             <x-slot:actions>
                 <div class="w-full justify-start">
-                    <x-button class="btn-primary w-full sm:w-auto" :label="__('This product is done, let\'s sell it')" type="submit" />
+                    <x-button class="btn-primary w-full sm:w-auto" :label="$this->submit_btn_lbl" type="submit" />
                 </div>
             </x-slot:actions>
         </x-form>

@@ -6,5 +6,5 @@
 @if ($profile->has_shop)
     <x-menu-item title="Shop" icon="o-building-storefront" link="{{ route('app.shop.edit') }}" />
 
-    <x-menu-item title="Products" icon="o-shopping-bag" link="{{ route('app.dashboard') }}" />
+    <x-menu-item title="Products" icon="o-shopping-bag" link="{{ route('app.product.index') }}" />
 @endif

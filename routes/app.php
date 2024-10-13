@@ -14,3 +14,5 @@ Volt::route('shop/create', 'pages.shop.create')->name('app.shop.create');
 Volt::route('shop/edit', 'pages.shop.edit')->name('app.shop.edit');
 
 Volt::route('product/create', 'pages.product.create')->name('app.product.create');
+Volt::route('product/{product}/edit', 'pages.product.create')->name('app.product.edit');
+Volt::route('products', 'pages.product.index')->name('app.product.index');
