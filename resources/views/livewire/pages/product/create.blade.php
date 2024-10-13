@@ -22,7 +22,7 @@ uses([Toast::class]);
 
 layout('layouts.app');
 
-state(['shop' => type(auth()->user())->as(User::class)->active_profile->shop])->locked();
+state(['shop' => fn() => type(auth()->user())->as(User::class)->active_profile->shop])->locked();
 state(['title', 'description', 'price', 'is_bundle' => false, 'pieces_per_bundle' => null, 'individually_sellable' => false]);
 
 $resetPiecesPerBundle = js('!$wire.is_bundle && ($wire.pieces_per_bundle=null)');
